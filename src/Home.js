@@ -3,25 +3,33 @@ import BlogList from "./BlogList";
 
 const Home = () => {
     // let name = 'mario';
-    const [blogs, setBlogs] = useState([
-        {title: 'My First Title For Blog', contnet: 'lorem Ipsum .....', author: 'Ahmed', id: 1},
-        {title: 'My Second Title For Blog', contnet: 'lorem Ipsum .....', author: 'Mohamed', id: 2},
-        {title: 'My Third Title For Blog', contnet: 'lorem Ipsum .....', author: 'Salah', id: 3}
-    ]);
-
+    const [blogs, setBlogs] = useState(null);
+    const [isPending, setIsPending] = useState(true); 
     const handelDelete = (id) => {
         const newBlogs = blogs.filter(blog => blog.id !== id);
         setBlogs(newBlogs);
     }
 useEffect(() =>{
-    console.log('use effect ran');
-    console.log(blogs);
-})
+    setTimeout(() => {
+        fetch('http://localhost:7000/blogs')
+        .then(res => {
+           return res.json();
+   
+        })
+        .then(data =>{
+           setBlogs(data);
+           setIsPending(false);
+        });
+   
+    }, 1000);
+
+}, []);
 
     return ( 
         <div className="home">
             {/* <BlogList blogs = {blogs}  title='All Blogs!' /> */}
-            <BlogList blogs ={blogs} title="All Articals!" handelDelete={ handelDelete } />
+            { isPending && <div>Loading...</div> }
+           { blogs && <BlogList blogs ={blogs} title="All Articals!" handelDelete={ handelDelete } /> }
             {/* <BlogList blogs = {blogs.filter((blog) => blog.author === 'Ahmed')}  title="Ahmed's Articals!" handelDelete={ handelDelete } /> */}
         </div>
      );
