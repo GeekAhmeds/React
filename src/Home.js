@@ -1,38 +1,40 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import BlogList from "./BlogList";
 
 const Home = () => {
-    // let name = 'mario';
-    const [blogs, setBlogs] = useState(null);
-    const [isPending, setIsPending] = useState(true); 
-    const handelDelete = (id) => {
-        const newBlogs = blogs.filter(blog => blog.id !== id);
-        setBlogs(newBlogs);
-    }
-useEffect(() =>{
+  const [blogs, setBlogs] = useState(null);
+  const [isPending, setIsPending] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
     setTimeout(() => {
-        fetch('http://localhost:7000/blogs')
-        .then(res => {
-           return res.json();
-   
-        })
-        .then(data =>{
-           setBlogs(data);
-           setIsPending(false);
-        });
-   
+      fetch('http://localhost:7000/blogs')
+      .then(res => {
+        if (!res.ok) { // error coming back from server
+          throw Error('could not fetch the data for that resource');
+        } 
+        return res.json();
+      })
+      .then(data => {
+        setIsPending(false);
+        setBlogs(data);
+        setError(null);
+      })
+      .catch(err => {
+        // auto catches network / connection error
+        setIsPending(false);
+        setError(err.message);
+      })
     }, 1000);
+  }, [])
 
-}, []);
-
-    return ( 
-        <div className="home">
-            {/* <BlogList blogs = {blogs}  title='All Blogs!' /> */}
-            { isPending && <div>Loading...</div> }
-           { blogs && <BlogList blogs ={blogs} title="All Articals!" handelDelete={ handelDelete } /> }
-            {/* <BlogList blogs = {blogs.filter((blog) => blog.author === 'Ahmed')}  title="Ahmed's Articals!" handelDelete={ handelDelete } /> */}
-        </div>
-     );
+  return (
+    <div className="home">
+      { error && <div>{ error }</div> }
+      { isPending && <div>Loading...</div> }
+      { blogs && <BlogList blogs={blogs} /> }
+    </div>
+  );
 }
  
 export default Home;
