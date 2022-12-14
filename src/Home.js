@@ -25,7 +25,7 @@ const Home = () => {
         setIsPending(false);
         setError(err.message);
       })
-    }, 1000);
+    }, 1000);  // the number in this line means a m-second [1000 => 1 Sec]
   }, [])
 
   return (
