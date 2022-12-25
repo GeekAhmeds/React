@@ -2,19 +2,19 @@
     "blogs": [
         {
             "title": "My First Title For Blog",
-            "contnet": "lorem Ipsum .....",
+            "content": "lorem Ipsum .....",
             "author": "Ahmed",
             "id": 1
         },
         {
             "title": "My Second  Title For Blog",
-            "contnet": "lorem Ipsum .....",
+            "content": "lorem Ipsum .....",
             "author": "Mohamed",
             "id": 2
         },
         {
             "title": "My Second  Title For Blog",
-            "contnet": "lorem Ipsum .....",
+            "content": "lorem Ipsum .....",
             "author": "Mohamed",
             "id": 3
         }
